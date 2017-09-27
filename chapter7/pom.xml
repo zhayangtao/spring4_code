@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.smart</groupId>
-    <artifactId>chapter5</artifactId>
+    <artifactId>chapter7</artifactId>
     <version>1.0</version>
     <build>
         <plugins>
@@ -18,7 +18,7 @@
             </plugin>
         </plugins>
     </build>
-    <name>Spring4.x第五章实例</name>
+    <name>Spring4.x第七章实例</name>
     <dependencies>
         <!-- spring 依赖-->
         <dependency>
