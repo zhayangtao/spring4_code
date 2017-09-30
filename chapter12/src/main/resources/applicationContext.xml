@@ -7,10 +7,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-    <context:component-scan base-package="com.smart.nestcall" />
+    <context:component-scan base-package="com.smart" />
     
-    <!--<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="jdbcManager"
-          p:dataSource-ref="dataSource" />-->
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="jdbcManager"
+          p:dataSource-ref="dataSource" />
     
     <aop:config proxy-target-class="true" >
         <aop:pointcut id="serviceJdbcMethod" expression="within(com.smart.nestcall.BaseService+)" />
@@ -25,4 +25,8 @@
     <bean id="hibernateTransactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"
           p:sessionFactory-ref="sessionFactory" />
 
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="specialService" expression="execution(* com.smart.special.SpecialUserService.*(..))"/>
+        <aop:advisor advice-ref="jdbcAdvice" pointcut-ref="specialService"/>
+    </aop:config>
 </beans>
