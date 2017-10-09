@@ -3,6 +3,7 @@ package com.smart.connleak;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 /**
  * Created by shliangyan on 2017/9/30.
  */
+@Service
 public class JdbcUserService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
