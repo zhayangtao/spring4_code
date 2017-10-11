@@ -2,17 +2,13 @@ package com.smart.dao;
 
 import com.smart.domain.Forum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,5 +60,41 @@ public class ForumDao {
                 return forumList.size();
             }
         });
+    }
+
+    public Forum getForum(final int forumId) {
+        String sql = "SELECT forum_name, forum_desc FROM t_forum WHERE forum_id=?";
+        final Forum forum = new Forum();
+        jdbcTemplate.query(sql, new Object[]{forumId}, resultSet -> {
+            forum.setForumId(forumId);
+            forum.setForumName(resultSet.getString("forum_name"));
+            forum.setForumDesc(resultSet.getString("forum_desc"));
+        });
+        return forum;
+    }
+
+    public List<Forum> getForums(final int fromId, final int toId) {
+        String sql = "SELECT forum_id, forum_name, forum_desc FROM t_forum WHERE forum_id BETWEEN ? AND ?";
+        final List<Forum> forums = new ArrayList<>();
+        jdbcTemplate.query(sql, new Object[]{fromId, toId}, resultSet -> {
+            Forum forum = new Forum();
+            forum.setForumId(resultSet.getInt("forum_id"));
+            forum.setForumName(resultSet.getString("forum_name"));
+            forum.setForumDesc(resultSet.getString("forum_desc"));
+            forums.add(forum);
+        });
+        return forums;
+    }
+
+    public List<Forum> getForum2(final int fromId, final int toId) {
+        String sql = "SELECT forum_id, forum_name, forum_desc FROM t_forum WHERE forum_id BETWEEN ? AND ?";
+        List<Forum> forums = jdbcTemplate.query(sql, new Object[]{fromId, toId}, (resultSet, i) -> {
+            Forum forum = new Forum();
+            forum.setForumId(resultSet.getInt("forum_id"));
+            forum.setForumName(resultSet.getString("forum_name"));
+            forum.setForumDesc(resultSet.getString("forum_desc"));
+            return forum;
+        });
+        return forums;
     }
 }
