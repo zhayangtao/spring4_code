@@ -3,9 +3,9 @@ package com.smart.domain;
 import java.io.Serializable;
 
 /**
- * Created by Administrator on 2017/10/3.
+ * Created by shliangyan on 2017/9/30.
  */
-public class Forum implements Serializable {
+public class Forum implements Serializable{
     private int forumId;
     private String forumName;
     private String forumDesc;
