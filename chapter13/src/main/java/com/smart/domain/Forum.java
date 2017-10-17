@@ -33,4 +33,5 @@ public class Forum implements Serializable{
     public void setForumDesc(String forumDesc) {
         this.forumDesc = forumDesc;
     }
+
 }

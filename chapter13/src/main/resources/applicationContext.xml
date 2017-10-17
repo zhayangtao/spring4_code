@@ -15,12 +15,20 @@
           p:driverClassName="${jdbc.driverClassName}"
           p:url="${jdbc.url}"
           p:username="${jdbc.username}"
-          p:password="${jdbc.password}" />
+          p:password="${jdbc.password}"/>
 
     <!--声明jdbcTemplate Bean-->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
-          p:dataSource-ref="dataSource" />
+          p:dataSource-ref="dataSource"/>
 
     <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"
-          lazy-init="true" />
+          lazy-init="true"/>
+
+    <bean id="incrementer" class="org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer"
+          p:dataSource-ref="dataSource"
+          p:incrementerName="sequence_id"/>
+
+    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
 </beans>

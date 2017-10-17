@@ -3,6 +3,10 @@ package com.smart.dao;
 import com.smart.domain.Forum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -18,6 +22,9 @@ import java.util.List;
 public class ForumDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public void initDb() {
         String sql = "create table t_user(user_id int primary key,user_name varchar(60))";
@@ -96,5 +103,18 @@ public class ForumDao {
             return forum;
         });
         return forums;
+    }
+
+    public void addForumByNamedParams(final Forum forum) {
+        final String sql = "INSERT INTO t_forum(forum_name,forum_desc) VALUES (:forumName,:forumDesc)";
+        SqlParameterSource source = new BeanPropertySqlParameterSource(forum);
+        namedParameterJdbcTemplate.update(sql, source);
+    }
+
+    public void addForum3(final Forum forum) {
+        final String sql = "INSERT INTO t_forum(forum_name, forum_desc) VALUES (:forumName,:forumDesc)";
+        SqlParameterSource source = new MapSqlParameterSource().addValue("forumName", forum.getForumName())
+                .addValue("forumDesc", forum.getForumDesc());
+        namedParameterJdbcTemplate.update(sql, source);
     }
 }
