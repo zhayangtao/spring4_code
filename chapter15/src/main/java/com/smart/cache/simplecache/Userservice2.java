@@ -24,4 +24,9 @@ public class Userservice2 {
         System.out.println("real querying db..." + userId);
         return new User(userId);
     }
+
+    @Cacheable(cacheNames = "users", condition = "#user.age < 35")
+    public User getUser(User user) {
+        return null;
+    }
 }
