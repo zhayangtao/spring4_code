@@ -1,6 +1,7 @@
 package com.smart.cache.simplecache;
 
 import com.smart.cache.domain.User;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,14 @@ public class Userservice2 {
     @Cacheable(cacheNames = "users", condition = "#user.age < 35")
     public User getUser(User user) {
         return null;
+    }
+
+    /**
+     * 删除缓存
+     * @param id
+     */
+    @CacheEvict(value = "users")
+    public void removeUser(int id) {
+
     }
 }
