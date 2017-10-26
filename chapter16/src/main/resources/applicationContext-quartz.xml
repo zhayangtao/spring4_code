@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <context:component-scan base-package="com.smart" />
+    <!--定义quartz-->
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+          p:jobClass="com.smart.quartz.MyJob"
+          p:applicationContextJobDataKey="applicationContext">
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="size" value="10"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--使用spring提供的MethodInvokingJobDetailFactoryBean将普通类定义为job-->
+    <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          p:targetObject-ref="myService"
+          p:targetMethod="doJob"
+          p:concurrent="true" />  <!--指定concurrent为true表示无状态任务，可以并发执行，有状态则不可以-->
+
+    <!--定义simpleTrigger
+    startDelay 表示延迟多长时间触发，单位毫秒
+    repeatInterval：触发间隔时长
+    -->
+    <bean class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean" id="simpleTrigger"
+          p:jobDetail-ref="jobDetail"
+          p:startDelay="1000"
+          p:repeatInterval="2000"
+          p:repeatCount="10">
+        <property name="jobDataAsMap"> <!--此处配置的map数据将填充到Trigger的JobDataMap中-->
+            <map>
+                <entry key="count" value="10"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--定义cronTrigger-->
+    <bean class="org.springframework.scheduling.quartz.CronTriggerFactoryBean" id="cronTrigger"
+          p:jobDetail-ref="jobDetail"
+          p:cronExpression="0/5 * * * * ?" />
+
+    <!--创建Scheduler
+    通过属性配置的方式代替Quartz自身配置文件
+    -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" id="scheduler">
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger"/>
+            </list>
+        </property>
+        <!--以Map类型存储SchedulerContext数据-->
+        <property name="schedulerContextAsMap">
+            <map>
+                <entry key="timeout" value="30"/>
+            </map>
+        </property>
+        <!--默认情况下，quartz在类路径下查询quartz.properties配置文件-->
+        <property name="configLocation" value="classpath:quartz.properties"/>
+    </bean>
+</beans>
