@@ -1,11 +1,13 @@
 package com.smart.web;
 
+import com.smart.domain.User;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,11 +16,8 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.io.OutputStream;
-
-import static com.sun.xml.internal.ws.api.message.Packet.Status.Request;
 
 /**
  * Created by shliangyan on 2017/10/26.
@@ -33,7 +32,7 @@ public class UserController {
     }
 
     @RequestMapping("/{userId}")
-    public ModelAndView showDetail(@PathVariable("useriD") String userId) {
+    public ModelAndView showDetail(@PathVariable("userId") String userId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user/showDetail");
         modelAndView.addObject("user", userId);
@@ -89,5 +88,31 @@ public class UserController {
         return new ResponseEntity<String>("1", HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/handle61")
+    public String handle61(@ModelAttribute("user") User user) {
+        return "/user/createSuccess";
+    }
 
+    public String handle63(ModelMap modelMap) {
+        modelMap.addAttribute("testAttr", "value1");
+        User user = (User) modelMap.get("user");
+        user.setUserName("tom");
+        return "/user/showUser";
+    }
+
+    @RequestMapping(path = "/handle81")
+    public String handle81(@RequestParam("user") User user, ModelMap modelMap) {
+        modelMap.put("user", user);
+        return "/user/showUser";
+    }
+
+    @RequestMapping(value = "/throwException")
+    public String throwException() {
+        throw new RuntimeException("ddd");
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public String handleException(RuntimeException exception, HttpServletRequest request) {
+        return "/error.jsp";
+    }
 }
