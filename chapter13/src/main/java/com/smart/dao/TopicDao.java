@@ -23,9 +23,9 @@ public class TopicDao {
                 int replies = resultSet.getInt("topic_replies");
                 int views = resultSet.getInt("topic_views");
                 if (views > 0) {
-                    return new Double(replies / views);
+                    return (double) (replies / views);
                 } else {
-                    return new Double(0.0);
+                    return 0.0;
                 }
             }
         });
