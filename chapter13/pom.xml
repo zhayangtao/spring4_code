@@ -57,6 +57,31 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <properties>
         <file.encoding>UTF-8</file.encoding>
         <spring.version>4.2.2.RELEASE</spring.version>
@@ -65,6 +90,7 @@
         <mysql.version>5.1.29</mysql.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
         <jetty.version>8.1.8.v20121106</jetty.version>
+        <kotlin.version>1.2.0</kotlin.version>
     </properties>
 
 </project>

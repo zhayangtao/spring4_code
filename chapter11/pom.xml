@@ -67,6 +67,31 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 
     <properties>
         <mysql.version>5.1.29</mysql.version>
@@ -75,5 +100,6 @@
         <spring.version>4.2.2.RELEASE</spring.version>
         <aspectjweaver.version>1.6.8</aspectjweaver.version>
         <slf4j.version>1.7.5</slf4j.version>
+        <kotlin.version>1.2.0</kotlin.version>
     </properties>
 </project>
